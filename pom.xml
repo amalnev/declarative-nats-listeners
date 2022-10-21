@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <revision>0.1</revision>
+
+        <jetbrains.annotations.version>23.0.0</jetbrains.annotations.version>
+        <lombok.version>1.18.24</lombok.version>
+        <spring-boot.version>2.7.4</spring-boot.version>
+        <jnats.version>2.16.1</jnats.version>
+        <validation.api.version>3.0.2</validation.api.version>
+    </properties>
+
+    <groupId>org.amalnev</groupId>
+    <artifactId>declarative-nats-listeners</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <name>declarative-nats-listeners</name>
+    <developers>
+        <developer>
+            <name>Aleksei Malnev</name>
+            <email>a.malnev@gmail.com</email>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+    </dependencies>
+
+    <modules>
+        <module>declarative-nats-listeners-starter</module>
+        <module>declarative-nats-listeners-test-app</module>
+    </modules>
+
+</project>
