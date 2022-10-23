@@ -75,7 +75,7 @@ public class JetStreamListenerAnnotationBeanPostProcessor implements BeanPostPro
                 .stream()
                 .flatMap(listenerSpecification -> {
                     try {
-                        Method listenerMethod = bean.getClass().getMethod(listenerSpecification.getMethodName(), Message.class);
+                        Method listenerMethod = bean.getClass().getDeclaredMethod(listenerSpecification.getMethodName(), Message.class);
                         return IntStream.range(0, listenerSpecification.getConcurrency())
                                 .mapToObj(i -> new DelegatingJetStreamConsumer(
                                         natsConnection,

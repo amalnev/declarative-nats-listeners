@@ -15,12 +15,8 @@
         <spring-boot.version>2.7.4</spring-boot.version>
         <jnats.version>2.16.1</jnats.version>
         <validation.api.version>3.0.2</validation.api.version>
+        <testcontainers.version>1.17.4</testcontainers.version>
     </properties>
-
-    <groupId>org.amalnev</groupId>
-    <artifactId>declarative-nats-listeners</artifactId>
-    <version>${revision}</version>
-    <packaging>pom</packaging>
 
     <name>declarative-nats-listeners</name>
     <developers>
@@ -29,6 +25,17 @@
             <email>a.malnev@gmail.com</email>
         </developer>
     </developers>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.4</version>
+    </parent>
+
+    <groupId>org.amalnev</groupId>
+    <artifactId>declarative-nats-listeners</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
 
     <dependencies>
         <dependency>
@@ -42,5 +49,4 @@
         <module>declarative-nats-listeners-starter</module>
         <module>declarative-nats-listeners-test-app</module>
     </modules>
-
 </project>

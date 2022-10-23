@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: declarative-nats-listeners-test-app
+nats:
+  bootstrap-servers: "nats://localhost:4222,nats://localhost:5222"
+  username-password-auth:
+    enabled: false
+  n-key-auth:
+    enabled: false
+  use-tls: false

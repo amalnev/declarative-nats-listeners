@@ -5,6 +5,8 @@ import io.nats.client.api.ConsumerConfiguration;
 import io.nats.client.api.DeliverPolicy;
 import lombok.SneakyThrows;
 
+import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class DelegatingJetStreamConsumer implements NatsMessageConsumer {
@@ -19,9 +21,12 @@ public class DelegatingJetStreamConsumer implements NatsMessageConsumer {
                                        String deliverPolicy,
                                        Consumer<Message> delegate) {
         this.delegate = delegate;
+        String queueName = Optional.of(queue)
+                .filter(it -> !it.isBlank())
+                .orElse(UUID.randomUUID().toString());
         PushSubscribeOptions subscribeOptions = ConsumerConfiguration.builder()
-                .durable(queue)
-                .deliverGroup(queue)
+                .durable(queueName)
+                .deliverGroup(queueName)
                 .deliverPolicy(DeliverPolicy.valueOf(deliverPolicy))
                 .buildPushSubscribeOptions();
         subscription = jetStream.subscribe(
