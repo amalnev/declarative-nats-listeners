@@ -3,7 +3,6 @@ package org.amalnev.nats.config;
 import io.nats.client.*;
 import lombok.SneakyThrows;
 import org.amalnev.nats.properties.NatsConfigurationProperties;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +12,6 @@ import javax.net.ssl.SSLContext;
 import java.util.Objects;
 
 @Configuration
-@ConditionalOnClass(Connection.class)
 @EnableConfigurationProperties(NatsConfigurationProperties.class)
 public class NatsConnectionAutoConfiguration {
 
