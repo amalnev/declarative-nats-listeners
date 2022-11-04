@@ -7,11 +7,11 @@
     <parent>
         <groupId>org.amalnev</groupId>
         <artifactId>declarative-nats-listeners</artifactId>
-        <version>${revision}</version>
+        <version>0.1</version>
     </parent>
 
     <artifactId>declarative-nats-listeners-test-app</artifactId>
-    <version>${revision}</version>
+    <version>0.1</version>
 
     <dependencies>
         <dependency>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.amalnev</groupId>
             <artifactId>declarative-nats-listeners-starter</artifactId>
-            <version>${revision}</version>
+            <version>0.1</version>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
