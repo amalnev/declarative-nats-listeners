@@ -12,6 +12,7 @@ import javax.net.ssl.SSLContext;
 import java.util.Objects;
 
 @Configuration
+@ConditionalOnMissingBean(Connection.class)
 @EnableConfigurationProperties(NatsConfigurationProperties.class)
 public class NatsConnectionConfiguration {
 
@@ -31,7 +32,6 @@ public class NatsConnectionConfiguration {
 
     @Bean
     @SneakyThrows
-    @ConditionalOnMissingBean(Connection.class)
     public Connection natsConnection(NatsConfigurationProperties configurationProperties,
                                      ConnectionListener connectionListener,
                                      ErrorListener errorListener) {
