@@ -1,13 +1,12 @@
 package org.amalnev.nats.impl;
 
 import io.nats.client.Connection;
-import io.nats.client.JetStream;
 import io.nats.client.Message;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
-import org.amalnev.nats.annotations.JetStreamListener;
-import org.amalnev.nats.consumer.DelegatingJetStreamConsumer;
+import org.amalnev.nats.annotations.NatsListener;
+import org.amalnev.nats.consumer.DelegatingCoreNatsConsumer;
 import org.amalnev.nats.consumer.NatsMessageConsumerRegistry;
 import org.amalnev.nats.utils.Reflection;
 import org.springframework.beans.BeansException;
@@ -19,16 +18,15 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
-public class JetStreamListenerAnnotationBeanPostProcessor implements BeanPostProcessor {
+public class NatsListenerAnnotationBeanPostProcessor implements BeanPostProcessor {
 
     private final Connection natsConnection;
-    private final JetStream jetStream;
     private final NatsMessageConsumerRegistry consumerRegistry;
-    private final Map<String, Collection<JetStreamListenerSpecification>> detectedListeners = new HashMap<>();
+    private final Map<String, Collection<NatsListenerSpecification>> detectedListeners = new HashMap<>();
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        detectJetStreamListenerMethods(bean, beanName);
+        detectNatsListenerMethods(bean, beanName);
         return bean;
     }
 
@@ -40,26 +38,24 @@ public class JetStreamListenerAnnotationBeanPostProcessor implements BeanPostPro
 
     @Data
     @Accessors(chain = true)
-    private static class JetStreamListenerSpecification {
+    private static class NatsListenerSpecification {
         private String beanName;
         private String methodName;
         private String subject;
         private String queue;
-        private String deliverPolicy;
         private int concurrency;
     }
 
-    private void detectJetStreamListenerMethods(Object bean, String beanName) {
-        List<JetStreamListenerSpecification> listenerSpecifications = Arrays.stream(bean.getClass().getMethods())
-                .filter(method -> Objects.nonNull(method.getAnnotation(JetStreamListener.class)))
+    private void detectNatsListenerMethods(Object bean, String beanName) {
+        List<NatsListenerSpecification> listenerSpecifications = Arrays.stream(bean.getClass().getMethods())
+                .filter(method -> Objects.nonNull(method.getAnnotation(NatsListener.class)))
                 .map(method -> {
-                    JetStreamListener listenerAnnotation = method.getAnnotation(JetStreamListener.class);
-                    return new JetStreamListenerSpecification()
+                    NatsListener listenerAnnotation = method.getAnnotation(NatsListener.class);
+                    return new NatsListenerSpecification()
                             .setBeanName(beanName)
                             .setMethodName(method.getName())
                             .setSubject(listenerAnnotation.subject())
                             .setQueue(listenerAnnotation.queue())
-                            .setDeliverPolicy(listenerAnnotation.deliverPolicy())
                             .setConcurrency(listenerAnnotation.concurrency());
                 })
                 .collect(Collectors.toList());
@@ -76,12 +72,10 @@ public class JetStreamListenerAnnotationBeanPostProcessor implements BeanPostPro
                     try {
                         Method listenerMethod = bean.getClass().getDeclaredMethod(listenerSpecification.getMethodName(), Message.class);
                         return IntStream.range(0, listenerSpecification.getConcurrency())
-                                .mapToObj(i -> new DelegatingJetStreamConsumer(
+                                .mapToObj(i -> new DelegatingCoreNatsConsumer(
                                         natsConnection,
-                                        jetStream,
                                         listenerSpecification.getSubject(),
                                         listenerSpecification.getQueue(),
-                                        listenerSpecification.getDeliverPolicy(),
                                         msg -> Reflection.invokeListenerMethod(bean, listenerMethod, msg)));
                     } catch (NoSuchMethodException noSuchMethodException) {
                         throw new IllegalStateException(
@@ -96,6 +90,4 @@ public class JetStreamListenerAnnotationBeanPostProcessor implements BeanPostPro
                 })
                 .forEach(consumerRegistry::registerConsumer);
     }
-
-
 }

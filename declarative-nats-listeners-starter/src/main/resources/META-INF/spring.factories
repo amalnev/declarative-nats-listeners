@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.amalnev.nats.config.NatsConnectionAutoConfiguration
+org.amalnev.nats.config.NatsConnectionConfiguration

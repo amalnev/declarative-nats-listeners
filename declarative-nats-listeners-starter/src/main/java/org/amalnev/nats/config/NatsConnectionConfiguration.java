@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @Configuration
 @EnableConfigurationProperties(NatsConfigurationProperties.class)
-public class NatsConnectionAutoConfiguration {
+public class NatsConnectionConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(ConnectionListener.class)
