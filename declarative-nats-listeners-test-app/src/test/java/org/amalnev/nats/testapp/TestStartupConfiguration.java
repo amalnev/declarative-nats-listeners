@@ -38,7 +38,7 @@ public class TestStartupConfiguration {
         StreamConfiguration streamConfig = StreamConfiguration.builder()
                 .name("default-stream")
                 .storageType(StorageType.Memory)
-                .subjects("basic.example")
+                .subjects("basic.jetstream.example")
                 .build();
 
         jsm.addStream(streamConfig);
