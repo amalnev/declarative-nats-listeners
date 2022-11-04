@@ -10,8 +10,6 @@ import org.amalnev.nats.annotations.NatsListener;
 import org.amalnev.nats.testapp.model.NatsMessageDto;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -33,10 +31,7 @@ public class BasicExamples {
 
     @SneakyThrows
     private void parseAndLogMessage(Message natsMessage) {
-        String messagePayloadAsString = new String(natsMessage.getData(), StandardCharsets.UTF_8);
-        NatsMessageDto messagePayloadAsObject = objectMapper.readValue(
-                messagePayloadAsString,
-                NatsMessageDto.class);
+        NatsMessageDto messagePayloadAsObject = NatsMessageDto.fromNatsMessage(natsMessage, objectMapper);
 
         log.info(
                 "{}",

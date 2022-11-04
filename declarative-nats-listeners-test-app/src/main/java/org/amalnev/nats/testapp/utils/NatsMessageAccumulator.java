@@ -1,4 +1,4 @@
-package org.amalnev.nats.testapp.listeners;
+package org.amalnev.nats.testapp.utils;
 
 import java.util.List;
 
@@ -9,4 +9,8 @@ public interface NatsMessageAccumulator<T> {
     List<T> waitForMessagesToArrive(int numberOfMessages, int timeoutMs);
 
     T waitForMessageToArrive(int timeoutMs);
+
+    void resetAccumulatedMessages();
+
+    int getNumberOfAccumulatedMessages();
 }
