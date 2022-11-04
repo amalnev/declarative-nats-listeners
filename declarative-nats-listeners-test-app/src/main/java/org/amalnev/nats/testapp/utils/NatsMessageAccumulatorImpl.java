@@ -21,8 +21,12 @@ public class NatsMessageAccumulatorImpl implements NatsMessageAccumulator<NatsMe
     @Override
     @SneakyThrows
     public synchronized List<NatsMessageDto> waitForMessagesToArrive(int numberOfMessages, int timeoutMs) {
-        if (accumulatedMessages.size() < numberOfMessages) {
+        long elapsedMs = 0;
+        while (accumulatedMessages.size() < numberOfMessages && elapsedMs < timeoutMs) {
+            long waitStartTimestamp = System.currentTimeMillis();
             wait(timeoutMs);
+            long waitEndTimestamp = System.currentTimeMillis();
+            elapsedMs += waitEndTimestamp - waitStartTimestamp;
         }
 
         if (accumulatedMessages.size() < numberOfMessages) {

@@ -1,7 +1,7 @@
 package org.amalnev.nats.testapp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.nats.client.JetStream;
+import io.nats.client.Connection;
 import io.nats.client.Message;
 import io.nats.client.impl.NatsMessage;
 import lombok.SneakyThrows;
@@ -18,10 +18,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.stream.IntStream;
 
 @SpringBootTest
-public class ExtendedJetStreamExamplesTest {
+public class ExtendedCoreNatsExamplesTest {
 
     @Autowired
-    private JetStream jetStream;
+    private Connection natsConnection;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -39,11 +39,11 @@ public class ExtendedJetStreamExamplesTest {
 
     @Test
     @SneakyThrows
-    public void runExtendedJetStreamExamplesTest() {
+    public void runExtendedCoreNatsExamplesTest() {
         IntStream.range(0, 10)
                 .mapToObj(i -> random.nextObject(NatsMessageDto.class))
                 .map(it -> new NatsMessage.Builder()
-                        .subject("extended.jetstream.example.subject.1")
+                        .subject("extended.core.example.subject.1")
                         .data(writeValueAsString(it), StandardCharsets.UTF_8)
                         .build())
                 .forEach(this::publish);
@@ -60,6 +60,6 @@ public class ExtendedJetStreamExamplesTest {
 
     @SneakyThrows
     private void publish(Message message) {
-        jetStream.publish(message);
+        natsConnection.publish(message);
     }
 }
