@@ -14,9 +14,9 @@ First, add a dependency to your pom.xml:
 ```xml
 
 <dependency>
- <groupId>org.amalnev</groupId>
- <artifactId>declarative-nats-listeners-starter</artifactId>
- <version>0.1</version>
+  <groupId>org.amalnev</groupId>
+  <artifactId>declarative-nats-listeners-starter</artifactId>
+  <version>0.1</version>
 </dependency>
 ```
 
@@ -30,7 +30,7 @@ Add some configurations to you application.yaml, at the very least you will need
 
 ```yaml
 nats:
- bootstrap-servers: "nats://localhost:4222"
+  bootstrap-servers: "nats://localhost:4222"
 ```
 
 Put @Enable* annotations over one of your @Configuration classes:
@@ -54,15 +54,15 @@ Now you can use @NatsListener and @JetStreamListener annotations to start receiv
 @Service
 public class NatsListenerService {
 
-    @NatsListener(subject = "my.subject")
-    public void handleMessagesFromMySubject(Message natsMessage) {
-        //...
-    }
+  @NatsListener(subject = "my.subject")
+  public void handleMessagesFromMySubject(Message natsMessage) {
+    //...
+  }
 
- @JetStreamListener(subject = "another.subject")
- public void handleMessagesFromAnotherSubject(Message natsMessage) {
-  //...
- }
+  @JetStreamListener(subject = "another.subject")
+  public void handleMessagesFromAnotherSubject(Message natsMessage) {
+    //...
+  }
 }
 ```
 
@@ -75,15 +75,15 @@ is this:
 
 ```yaml
 nats:
- bootstrap-servers: "nats://localhost:4222,nats://localhost:5222"
- username-password-auth:
-  enabled: true
-  username: user
-  password: pass
- n-key-auth:
-  enabled: true
-  n-key-seed: NKEYSEEDDATA
- use-tls: true
+  bootstrap-servers: "nats://localhost:4222,nats://localhost:5222"
+  username-password-auth:
+    enabled: true
+    username: user
+    password: pass
+  n-key-auth:
+    enabled: true
+    n-key-seed: NKEYSEEDDATA
+  use-tls: true
 ```
 
 The only required property is ```nats.bootstrap-servers```. It is possible to have several bootstrap servers for a NATS
@@ -124,13 +124,13 @@ Let's look at the example
 @Component
 class NatsListeners {
 
- @NatsListener(
-         subject = "my.subject",
-         queue = "queue-1",
-         concurrency = 2)
- public void handleMessage(Message msg) {
-  //...
- }
+  @NatsListener(
+          subject = "my.subject",
+          queue = "queue-1",
+          concurrency = 2)
+  public void handleMessage(Message msg) {
+    //...
+  }
 }
 ```
 
@@ -156,14 +156,14 @@ Important things to note here are:
 @Component
 class NatsListeners {
 
- @JetStreamListener(
-         subject = "my.subject",
-         queue = "queue-1",
-         deliverPolicy = "DeliverAll",
-         concurrency = 2)
- public void handleMessage(Message msg) {
-  //...
- }
+  @JetStreamListener(
+          subject = "my.subject",
+          queue = "queue-1",
+          deliverPolicy = "DeliverAll",
+          concurrency = 2)
+  public void handleMessage(Message msg) {
+    //...
+  }
 }
 ```
 
